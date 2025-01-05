@@ -1,0 +1,56 @@
+<!-- prettier-ignore -->
+<ng-container>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/apartments']">Apartments</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/blocks', apartmentId()]">Blocks</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/blocks', apartmentId()]">Floors</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/flats', apartmentId(), blockId(), floorId()]">Flats</a> </li>
+      <li class="breadcrumb-item active text-danger h6 m-0 p-0 ms-3 pt-2 pb-1" aria-current="page">{{flatId()}}</li>
+    </ol>
+  </nav>
+
+  <div class="w-100 px-2" style="position: fixed;bottom: 50px;left: 0;right: 0;">
+    <div class="btn-group w-100" role="group">
+      <button type="button" class="btn btn-danger" (click)="deleteConfirmationModal.show();" ><i class="me-2 bi bi-trash3"></i> Delete Flat </button >
+      <button type="button" class="btn btn-warning" (click)="editModal.show();"><i class="me-2 bi bi-pencil"></i> Edit Flat </button >
+    </div>
+  </div>
+  <!-- ************************* Delete ************************* -->
+  <ng-container>
+    <div bsModal #deleteConfirmationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-delete-confirmation" >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 id="dialog-delete-confirmation" class="modal-title pull-left"> Delete Flat Confirmation </h6>
+          </div>
+          <div class="modal-body"> Are you sure! Do you want to Delete Flat? </div>
+          <div class="modal-footer py-1">
+            <button type="button" class="btn btn-secondary" (click)="deleteConfirmationModal.hide()"> No </button>
+            <button type="button" class="btn btn-primary" (click)="deleteConfirmationModal.hide()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- ************************* Delete ************************* -->
+
+  <!-- ************************* Edit ************************* -->
+  <ng-container>
+    <div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-edit" >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 id="dialog-edit" class="modal-title pull-left"> Edit Flat </h6>
+          </div>
+          <div class="modal-body"> Are you sure! Do you want to Edit Flat? </div>
+          <div class="modal-footer py-1">
+            <button type="button" class="btn btn-secondary" (click)="editModal.hide()"> Cancel </button>
+            <button type="button" class="btn btn-primary" (click)="editModal.hide()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- ************************* Edit ************************* -->
+</ng-container>

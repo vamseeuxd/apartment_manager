@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.min.css";
+
+/* https://neumorphism.io/#e0e0e0 */
+
+.main-tab {
+  width: calc(100vw - 16px);
+  height: calc((var(--vh, 1vh) * 100) - 130px);
+  margin: 8px 0 0 8px;
+  padding: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.full-height {
+  height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+.popover-content.popover-body {
+  padding: 5px;
+}

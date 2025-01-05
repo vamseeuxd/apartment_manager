@@ -1,0 +1,84 @@
+<!-- prettier-ignore -->
+<ng-container>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/apartments']">Apartments</a> </li>
+      <li class="breadcrumb-item active text-danger h6 m-0 p-0 ms-3 pt-2 pb-1" aria-current="page" >Blocks</li>
+    </ol>
+  </nav>
+  <ul class="list-group main-tab shadow border">
+    @for (block of blocks; track block.id) {
+      <li class="list-group-item mb-2 py-3 shadow-sm border" >
+        <div class="d-flex justify-content-between align-items-center">
+          <label [routerLink]="['/floors', apartmentId(), block.id]">{{block.name}}</label>
+          <ng-container>
+            <ng-template #popTemplate>
+              <ul class="list-group">
+                <a class="list-group-item list-group-item-action" (click)="deleteConfirmationModal.show();actionPopOver.hide()" ><i class="me-2 bi bi-trash3"></i> Delete</a >
+                <a class="list-group-item list-group-item-action" (click)="editModal.show();actionPopOver.hide()"><i class="me-2 bi bi-pencil"></i> Edit</a >
+                <a class="list-group-item list-group-item-action" (click)="detailsModal.show();actionPopOver.hide()" ><i class="me-2 bi bi-file-earmark-text"></i> Show Details</a >
+                </ul>
+            </ng-template>
+            <!-- ************************* Delete ************************* -->
+            <ng-container>
+              <div bsModal #deleteConfirmationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-delete-confirmation" >
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 id="dialog-delete-confirmation" class="modal-title pull-left"> Delete Block Confirmation </h6>
+                    </div>
+                    <div class="modal-body"> Are you sure! Do you want to Delete Block? </div>
+                    <div class="modal-footer py-1">
+                      <button type="button" class="btn btn-secondary" (click)="deleteConfirmationModal.hide()"> No </button>
+                      <button type="button" class="btn btn-primary" (click)="deleteConfirmationModal.hide()">Yes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <!-- ************************* Delete ************************* -->
+
+            <!-- ************************* Edit ************************* -->
+            <ng-container>
+              <div bsModal #editModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-edit" >
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 id="dialog-edit" class="modal-title pull-left"> Edit Block </h6>
+                    </div>
+                    <div class="modal-body"> Are you sure! Do you want to Edit Block? </div>
+                    <div class="modal-footer py-1">
+                      <button type="button" class="btn btn-secondary" (click)="editModal.hide()"> Cancel </button>
+                      <button type="button" class="btn btn-primary" (click)="editModal.hide()">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <!-- ************************* Edit ************************* -->
+
+            <!-- ************************* Details ************************* -->
+            <ng-container>
+              <div bsModal #detailsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-details" >
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 id="dialog-details" class="modal-title pull-left"> Block Details </h6>
+                    </div>
+                    <div class="modal-body"> Are you sure! Do you want to Details Block? </div>
+                    <div class="modal-footer py-1">
+                      <button type="button" class="btn btn-secondary" (click)="detailsModal.hide()"> Cancel </button>
+                      <button type="button" class="btn btn-primary" (click)="detailsModal.hide()">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <!-- ************************* Details ************************* -->
+            <button type="button" #actionPopOver="bs-popover" class="btn btn-outline-danger border-0" triggers="click" placement="left" [popover]="popTemplate" containerClass="p-0" [outsideClick]="true" > <i class="bi bi-three-dots-vertical"></i> </button>
+          </ng-container>
+        </div>
+      </li>
+    }
+  </ul>
+</ng-container>
