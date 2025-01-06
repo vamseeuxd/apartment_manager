@@ -9,7 +9,7 @@
     @for (apartment of apartments; track apartment.id) {
     <li class="list-group-item mb-2 py-3 shadow-sm border">
       <div class="d-flex justify-content-between align-items-center">
-        <label [routerLink]="['/blocks', apartment.id]">{{ apartment.name }}</label>
+        <label [routerLink]="['/manage', 'blocks', apartment.id]">{{ apartment.name }}</label>
         <ng-container>
           <ng-template #popTemplate>
             <ul class="list-group">

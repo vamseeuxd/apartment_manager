@@ -2,8 +2,8 @@
 <ng-container>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0">
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/apartments']">Apartments</a> </li>
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/blocks', apartmentId()]">Blocks</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="[ '/manage', 'apartments' ]">Apartments</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/manage', 'blocks', apartmentId()]">Blocks</a> </li>
       <li class="breadcrumb-item active text-danger h6 m-0 p-0 ms-3 pt-2 pb-1" aria-current="page">Floors</li>
     </ol>
   </nav>
@@ -11,7 +11,7 @@
     @for (floor of floors; track floor.id) {
       <li class="list-group-item mb-2 py-3 shadow-sm border">
         <div class="d-flex justify-content-between align-items-center">
-          <label [routerLink]="['/flats', apartmentId(), blockId(), floor.id]">{{floor.name}}</label>
+          <label [routerLink]="['/manage', 'flats', apartmentId(), blockId(), floor.id]">{{floor.name}}</label>
           <ng-container>
             <ng-template #popTemplate>
               <ul class="list-group">
