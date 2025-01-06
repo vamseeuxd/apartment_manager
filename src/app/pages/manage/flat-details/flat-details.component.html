@@ -2,10 +2,10 @@
 <ng-container>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0">
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/apartments']">Apartments</a> </li>
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/blocks', apartmentId()]">Blocks</a> </li>
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/blocks', apartmentId()]">Floors</a> </li>
-      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/flats', apartmentId(), blockId(), floorId()]">Flats</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/manage', 'apartments' ]">Apartments</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/manage', 'blocks', apartmentId()]">Blocks</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/manage', 'blocks', apartmentId()]">Floors</a> </li>
+      <li class="breadcrumb-item h6 m-0 p-0 ms-3 pt-2 pb-1"> <a class="text-danger" [routerLink]="['/manage', 'flats', apartmentId(), blockId(), floorId()]">Flats</a> </li>
       <li class="breadcrumb-item active text-danger h6 m-0 p-0 ms-3 pt-2 pb-1" aria-current="page">{{flatId()}}</li>
     </ol>
   </nav>

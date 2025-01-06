@@ -8,11 +8,11 @@
 </div>
 
 <div class="btn-group w-100 rounded-0">
-  <a class="btn btn-danger rounded-0"  [(ngModel)]="activePage" [btnRadio]="0"><i class="bi bi-clipboard-data-fill"></i></a>
-  <a class="btn btn-danger rounded-0"  [(ngModel)]="activePage" [btnRadio]="1"><i class="bi bi-building-fill"></i></a>
-  <a class="btn btn-danger rounded-0"  [(ngModel)]="activePage" [btnRadio]="2"><i class="bi bi-person-fill"></i></a>
-  <a class="btn btn-danger rounded-0"  [(ngModel)]="activePage" [btnRadio]="3"><i class="bi bi-star-fill"></i></a>
-  <a class="btn btn-danger rounded-0"  [(ngModel)]="activePage" [btnRadio]="4"><i class="bi bi-gear-fill"></i></a>
+  <a class="btn btn-danger rounded-0" [routerLink]="[ '/dashboard' ]" routerLinkActive="active"><i class="bi bi-clipboard-data-fill"></i></a>
+  <a class="btn btn-danger rounded-0" [routerLink]="[ '/manage' ]" routerLinkActive="active"><i class="bi bi-building-fill"></i></a>
+  <a class="btn btn-danger rounded-0" [routerLink]="[ '/user' ]" routerLinkActive="active"><i class="bi bi-person-fill"></i></a>
+  <a class="btn btn-danger rounded-0" [routerLink]="[ '/favorite' ]" routerLinkActive="active"><i class="bi bi-star-fill"></i></a>
+  <a class="btn btn-danger rounded-0" [routerLink]="[ '/settings' ]" routerLinkActive="active"><i class="bi bi-gear-fill"></i></a>
 </div>
 
 <!-- <div class="m-2 p-1 shadow-sm">
