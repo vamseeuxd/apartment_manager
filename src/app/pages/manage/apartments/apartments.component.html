@@ -1,21 +1,78 @@
 <!-- prettier-ignore -->
-<ng-container>
+<div class="position-relative pt-2">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb mb-0">
       <li class="breadcrumb-item active text-danger h6 m-0 p-0 ms-3 pt-2 pb-1" aria-current="page" > Apartments </li>
     </ol>
   </nav>
+
+  <div class="position-absolute top-0 end-0 me-3 mt-2">
+    <ng-container>
+      <ng-template #filterPopTemplate>
+        <ul class="list-group">
+          @for (filterCategory of filters$(); track filterCategory.key) {
+            <li class="list-group-item list-group-item-action mb-2 border-top shadow-sm">
+              <p class="m-0 p-0 pb-1 mb-1 border-bottom">{{ filterCategory.key|uppercase }}</p>
+              @for (filter of filterCategory.values; track filter) {
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" [id]="filter.label" [checked]="filter.checked" (change)="onFilterChange(filterCategory.key, filter.label, $event)">
+                  <label class="text-nowrap form-check-label" [for]="filter.label">{{filter.label}}</label>
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      </ng-template>
+      <button type="button" class="btn btn-danger btn-sm" #filterPopOver="bs-popover"  triggers="click" placement="left" [popover]="filterPopTemplate" containerClass="p-0" [outsideClick]="true">
+        <i class="bi bi-funnel-fill"></i>
+      </button>
+    </ng-container>
+
+    <ng-container>
+      <div bsModal #addNewModal="bs-modal" class="modal fade" tabindex="-1" (onHidden)="addNewFormRef.resetForm({})" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 id="dialog-add-aparment" class="modal-title pull-left"> Add New Aparment </h6>
+            </div>
+            <form #addNewFormRef="ngForm" class="modal-body">
+              <div class="mb-2"> <label for="nameRef" class="form-label">Aparment Name : </label> <input type="text" name="name" ngModel class="form-control" id="nameRef"> </div>
+              <div class="mb-2"> <label for="addressRef" class="form-label">Aparment Address : </label> <input type="text" name="address" ngModel class="form-control" id="addressRef"> </div>
+              <div class="mb-2"> <label for="cityRef" class="form-label">Aparment City : </label> <input type="text" name="city" ngModel class="form-control" id="cityRef"> </div>
+              <div class="mb-2"> <label for="stateRef" class="form-label">Aparment State : </label> <input type="text" name="state" ngModel class="form-control" id="stateRef"> </div>
+              <div class="mb-2"> <label for="countryRef" class="form-label">Aparment Country : </label> <select type="text" name="country" ngModel class="form-control" id="countryRef"> <option value="India">India</option> <option value="China">China</option> <option value="USA">USA</option> </select> </div>
+              <div class="mb-2">
+                <label for="pincodeRef" class="form-label">Aparment Pincode : </label>
+                <input type="text" name="pincode" ngModel class="form-control" id="pincodeRef">
+              </div>
+            </form>
+            <div class="modal-footer py-1">
+              <button type="button" class="btn btn-secondary" (click)="addNewModal.hide()"> No </button>
+              <button type="button" class="btn btn-danger" (click)="addApartment(addNewFormRef,addNewModal)">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-danger btn-sm ms-2" (click)="addNewModal.show();">
+        <i class="bi bi-plus-lg"></i>
+      </button>
+    </ng-container>
+
+  </div>
+
   <ul class="list-group main-tab shadow-sm border">
-    @for (apartment of apartments; track apartment.id) {
+    @for (apartment of apartments$(); track apartment.id) {
     <li class="list-group-item mb-2 py-3 shadow-sm border">
       <div class="d-flex justify-content-between align-items-center">
-        <label [routerLink]="['/manage', 'blocks', apartment.id]">{{ apartment.name }}</label>
+        <div>
+          <p class="m-0 p-0 text-danger" [routerLink]="['/manage', 'blocks', apartment.id]">{{ apartment.name }}</p>
+          <small> {{apartment.address}}, {{apartment.city}}, {{apartment.state}}, {{apartment.country}}, {{apartment.pincode}} </small>
+        </div>
         <ng-container>
-          <ng-template #popTemplate>
+          <ng-template #actionButtonsPopTemplate>
             <ul class="list-group">
               <a class="list-group-item list-group-item-action" (click)="deleteConfirmationModal.show();actionPopOver.hide()" ><i class="me-2 bi bi-trash3"></i> Delete</a >
               <a class="list-group-item list-group-item-action" (click)="editModal.show();actionPopOver.hide()"><i class="me-2 bi bi-pencil"></i> Edit</a >
-              <a class="list-group-item list-group-item-action" (click)="detailsModal.show();actionPopOver.hide()" ><i class="me-2 bi bi-file-earmark-text"></i> Show Details</a >
               </ul>
           </ng-template>
           <!-- ************************* Delete ************************* -->
@@ -26,10 +83,13 @@
                   <div class="modal-header">
                     <h6 id="dialog-delete-confirmation" class="modal-title pull-left"> Delete Confirmation </h6>
                   </div>
-                  <div class="modal-body"> Are you sure! Do you want to Delete Apartment? </div>
+                  <div class="modal-body">
+                    Are you sure!<br>
+                    Do you want to Delete <b>{{ apartment.name }}</b>  Apartment?
+                  </div>
                   <div class="modal-footer py-1">
                     <button type="button" class="btn btn-secondary" (click)="deleteConfirmationModal.hide()"> No </button>
-                    <button type="button" class="btn btn-primary" (click)="deleteConfirmationModal.hide()">Yes</button>
+                    <button type="button" class="btn btn-primary" (click)="deleteApartment(apartment.id, deleteConfirmationModal)">Yes</button>
                   </div>
                 </div>
               </div>
@@ -45,40 +105,33 @@
                   <div class="modal-header">
                     <h6 id="dialog-edit" class="modal-title pull-left"> Edit Apartment </h6>
                   </div>
-                  <div class="modal-body"> Are you sure! Do you want to Edit Apartment? </div>
+                  <form #editFormRef="ngForm" class="modal-body">
+                    <input type="hidden" name="id" [ngModel]="apartment.id" class="form-control">
+                    <div class="mb-2"> <label for="nameRef" class="form-label">Aparment Name : </label> <input type="text" name="name" [ngModel]="apartment.name" class="form-control" id="nameRef"> </div>
+                    <div class="mb-2"> <label for="addressRef" class="form-label">Aparment Address : </label> <input type="text" name="address" [ngModel]="apartment.address" class="form-control" id="addressRef"> </div>
+                    <div class="mb-2"> <label for="cityRef" class="form-label">Aparment City : </label> <input type="text" name="city" [ngModel]="apartment.city" class="form-control" id="cityRef"> </div>
+                    <div class="mb-2"> <label for="stateRef" class="form-label">Aparment State : </label> <input type="text" name="state" [ngModel]="apartment.state" class="form-control" id="stateRef"> </div>
+                    <div class="mb-2"> <label for="countryRef" class="form-label">Aparment Country : </label> <select type="text" name="country" [ngModel]="apartment.country" class="form-control" id="countryRef"> <option value="India">India</option> <option value="China">China</option> <option value="USA">USA</option> </select> </div>
+                    <div class="mb-2">
+                      <label for="pincodeRef" class="form-label">Aparment Pincode : </label>
+                      <input type="text" name="pincode" [ngModel]="apartment.pincode" class="form-control" id="pincodeRef">
+                    </div>
+                  </form>
                   <div class="modal-footer py-1">
                     <button type="button" class="btn btn-secondary" (click)="editModal.hide()"> Cancel </button>
-                    <button type="button" class="btn btn-primary" (click)="editModal.hide()">Save</button>
+                    <button type="button" class="btn btn-danger" (click)="updateApartment(editFormRef,editModal)">Save</button>
                   </div>
                 </div>
               </div>
             </div>
           </ng-container>
           <!-- ************************* Edit ************************* -->
-
-          <!-- ************************* Details ************************* -->
-          <ng-container>
-            <div bsModal #detailsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-details" >
-              <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h6 id="dialog-details" class="modal-title pull-left"> Apartment Details </h6>
-                  </div>
-                  <div class="modal-body"> Are you sure! Do you want to Details Apartment? </div>
-                  <div class="modal-footer py-1">
-                    <button type="button" class="btn btn-secondary" (click)="detailsModal.hide()"> Cancel </button>
-                    <button type="button" class="btn btn-primary" (click)="detailsModal.hide()">Save</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-          <!-- ************************* Details ************************* -->
-          <button type="button" #actionPopOver="bs-popover" class="btn btn-outline-danger border-0" triggers="click" placement="left" [popover]="popTemplate" containerClass="p-0" [outsideClick]="true" > <i class="bi bi-three-dots-vertical"></i> </button>
+          <button type="button" #actionPopOver="bs-popover" class="btn btn-outline-danger border-0" triggers="click" placement="left" [popover]="actionButtonsPopTemplate" containerClass="p-0" [outsideClick]="true" > <i class="bi bi-three-dots-vertical"></i> </button>
         </ng-container>
       </div>
     </li>
     }
   </ul>
 
-</ng-container>
+
+</div>

@@ -1,34 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalDirective, ModalModule } from 'ngx-bootstrap/modal';
+import {
+  ApartmentsService,
+  IApartment,
+  IFilters,
+} from './service/apartments.service';
+import { CommonModule } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-apartments',
-  imports: [RouterLink, PopoverModule, ModalModule],
+  imports: [RouterLink, PopoverModule, ModalModule, CommonModule, FormsModule],
   templateUrl: './apartments.component.html',
-  styleUrl: './apartments.component.scss'
+  styleUrl: './apartments.component.scss',
 })
 export class ApartmentsComponent {
-  apartments = [
-    { id: '01', name: 'Apartment 01' },
-    { id: '02', name: 'Apartment 02' },
-    { id: '03', name: 'Apartment 03' },
-    { id: '04', name: 'Apartment 04' },
-    { id: '05', name: 'Apartment 05' },
-    { id: '06', name: 'Apartment 06' },
-    { id: '07', name: 'Apartment 07' },
-    { id: '08', name: 'Apartment 08' },
-    { id: '09', name: 'Apartment 09' },
-    { id: '10', name: 'Apartment 10' },
-    { id: '21', name: 'Apartment 21' },
-    { id: '22', name: 'Apartment 22' },
-    { id: '23', name: 'Apartment 23' },
-    { id: '24', name: 'Apartment 24' },
-    { id: '25', name: 'Apartment 25' },
-    { id: '26', name: 'Apartment 26' },
-    { id: '27', name: 'Apartment 27' },
-    { id: '28', name: 'Apartment 28' },
-    { id: '29', name: 'Apartment 29' },
-    { id: '30', name: 'Apartment 30' },
-  ];
+  apartmentService: ApartmentsService = inject(ApartmentsService);
+
+  apartments$ = toSignal(this.apartmentService.apartments$, {
+    initialValue: [],
+  });
+  filters$ = toSignal(this.apartmentService.filters$, { initialValue: [] });
+
+  onFilterChange(key: string, label: string, event: Event): void {
+    const inputElement = event.target as HTMLInputElement; // Cast to HTMLInputElement
+    const isChecked = inputElement.checked;
+
+    this.apartmentService.updateFilterState(key, label, isChecked);
+  }
+
+  addApartment(addNewFormRef: NgForm, addNewModal: ModalDirective): void {
+    this.apartmentService.addApartment({
+      ...addNewFormRef.value,
+      id: new Date().getTime().toString(),
+    });
+    addNewFormRef.resetForm({}); // Reset the form
+    addNewModal.hide();
+  }
+
+  updateApartment(editFormRef: NgForm, addNewModal: ModalDirective): void {
+    this.apartmentService.updateApartment(editFormRef.value.id, {
+      ...editFormRef.value,
+    });
+    addNewModal.hide();
+  }
+
+  deleteApartment(id: string, deleteConfirmationModal: ModalDirective): void {
+    this.apartmentService.deleteApartment(id);
+    deleteConfirmationModal.hide();
+  }
 }
